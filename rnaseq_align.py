@@ -36,7 +36,7 @@ workDir = args.workDir
 if workDir.endswith("/"):
         workDir = workDir[:-1]
 
-job_file = workDir + "/rnaseq_align_" + outName + ".sh"
+job_file = workDir + "/Slurm/rnaseq_align_" + outName + ".sh"
 
 # Write SLURM script
 
@@ -48,8 +48,8 @@ with open(job_file,"w") as fh:
         fh.writelines("#SBATCH --time=06:00:00\n")
         fh.writelines("#SBATCH --mem=40G\n")
         fh.writelines("#SBATCH --cpus-per-task=11\n")
-        fh.writelines("#SBATCH --error=" + workDir + "/" + outName + "_error.err\n")
-        fh.writelines("#SBATCH --output=" + workDir + "/" + outName + "_outfile.out\n")
+        fh.writelines("#SBATCH --error=" + workDir + "/Slurm/" + outName + "_error.err\n")
+        fh.writelines("#SBATCH --output=" + workDir + "/Slurm/" + outName + "_outfile.out\n")
         fh.writelines("\n")
         fh.writelines("###############################################################\n")
         fh.writelines("# RNA-Seq Alignment Workflow \n")
@@ -62,7 +62,7 @@ with open(job_file,"w") as fh:
         fh.writelines("\n")
         fh.writelines("mkdir " + workDir + "/" + outName + "\n")
         fh.writelines("\n")
-        fh.writelines("source " + sys.exec_prefix + "/bin/activate RNA-Seq_Alignment\n")
+        fh.writelines("source activate RNA-Seq_Alignment\n")
         fh.writelines("\n")
         fh.writelines("# BAM to FASTQ conversion via biobambam\n")
         fh.writelines("\n")
@@ -111,8 +111,8 @@ with open(job_file,"w") as fh:
         fh.writelines("--outSAMstrandField intronMotif \\\n")
         fh.writelines("--outSAMunmapped Within\n")
         fh.writelines("\n")
-        fh.writelines("source " + sys.exec_prefix +  "/bin/deactivate\n")
-        fh.writelines("\n")
+        fh.writelines("source deactivate\n")
+        fh.writelines("\n"
 
 fh.close()
 
