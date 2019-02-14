@@ -81,9 +81,9 @@ with open(job_file,"w") as fh:
         fh.writelines("\n")
         fh.writelines("# Prepare FASTQ for star_align.py\n")
         fh.writelines("\n")
-        fh.writelines("tar cvf " + workDir + "/" + outName + "/" + outName + "_fastq.tar \\\n")
-        fh.writelines(workDir + "/" + outName + "/" + outName + "_1.fastq.gz \\\n")
-        fh.writelines(workDir + "/" + outName + "/" + outName + "_2.fastq.gz \\\n")
+        fh.writelines("tar cvf /" + workDir + "/" + outName + "/" + outName + "_fastq.tar \\\n")
+        fh.writelines("/" + workDir + "/" + outName + "/" + outName + "_1.fastq.gz \\\n")
+        fh.writelines("/" + workDir + "/" + outName + "/" + outName + "_2.fastq.gz \\\n")
         fh.writelines("--remove-files\n")
         fh.writelines("\n")
         fh.writelines("# Run Star Align \n")
@@ -112,7 +112,9 @@ with open(job_file,"w") as fh:
         fh.writelines("--outSAMunmapped Within\n")
         fh.writelines("\n")
         fh.writelines("source deactivate\n")
-        fh.writelines("\n"
+        fh.writelines("\n")
+        fh.writelines("rm /" + workDir + "/" + outName + "/" + outName + "_fastq.tar\n")
+        fh.writelines("\n")
 
 fh.close()
 
