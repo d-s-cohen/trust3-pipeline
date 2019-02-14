@@ -92,7 +92,7 @@ with open(job_file,"w") as fh:
         fh.writelines("--genomeDir " + workDir + "/Resources/Index/star_genome_d1_vd1_gtfv22 \\\n")
         fh.writelines("--tarFileIn " + workDir + "/" + outName + "/" + outName + "_fastq.tar \\\n")
         fh.writelines("--workDir " + workDir + "/" + outName + " \\\n")
-        fh.writelines("--genomeFastaFiles " + workDir + "Resources/Genome/GRCh38.d1.vd1.fa \\\n")
+        fh.writelines("--genomeFastaFiles " + workDir + "/Resources/Genome/GRCh38.d1.vd1.fa \\\n")
         fh.writelines("--out " + workDir + "/" + outName + "/" + outName + "_aligned.bam \\\n")
         fh.writelines("--runThreadN 8 \\\n")
         fh.writelines("--outFilterMultimapScoreRange 1 \\\n")
