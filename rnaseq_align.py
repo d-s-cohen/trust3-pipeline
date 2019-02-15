@@ -93,7 +93,7 @@ with open(job_file,"w") as fh:
         fh.writelines("--tarFileIn " + workDir + "/" + outName + "/" + outName + "_TEMP_fastq.tar \\\n")
         fh.writelines("--workDir " + workDir + "/" + outName + " \\\n")
         fh.writelines("--genomeFastaFiles " + workDir + "/Resources/Genome/GRCh38.d1.vd1.fa \\\n")
-        fh.writelines("--out " + workDir + "/" + outName + "/" + outName + "_aligned.bam \\\n")
+        fh.writelines("--out " + workDir + "/" + outName + "/" + outName + ".bam \\\n")
         fh.writelines("--runThreadN 8 \\\n")
         fh.writelines("--outFilterMultimapScoreRange 1 \\\n")
         fh.writelines("--outFilterMultimapNmax 20 \\\n")
@@ -113,8 +113,9 @@ with open(job_file,"w") as fh:
         fh.writelines("\n")
         fh.writelines("source deactivate\n")
         fh.writelines("\n")
-        fh.writelines("rm /" + workDir + "/" + outName + "/" + outName + "_TEMP_fastq.tar\n")
+        fh.writelines("rm " + workDir + "/" + outName + "/" + outName + "_TEMP_fastq.tar\n")
         fh.writelines("\n")
+        fh.writelines("samtools index " +  workDir + "/" + outName + "/" + outName + ".bam " +  workDir + "/" + outName + "/" + outName + ".bai")
 
 fh.close()
 
