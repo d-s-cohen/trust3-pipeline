@@ -508,6 +508,8 @@ if __name__ == "__main__":
     subprocess.check_call(cmd, shell=True, cwd=align_dir)
 
     ### move output file
+    shutil.move(os.path.join(align_dir, 'Log.final.out'), os.path.join(args.workDir,'/Log.final.out'))
+    shutil.move(os.path.join(align_dir_1st, 'Log.final.out'), os.path.join(args.workDir,'/Log_1st_pass.final.out'))
     if 'BAM' in args.outSAMtype and 'SortedByCoordinate' in args.outSAMtype:
         shutil.move(os.path.join(align_dir, 'Aligned.sortedByCoord.out.bam'), args.out)
     elif 'BAM' in args.outSAMtype and 'Unsorted' in args.outSAMtype:
