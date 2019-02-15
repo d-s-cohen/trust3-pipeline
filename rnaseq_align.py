@@ -1,8 +1,8 @@
 #!/usr/bin/env python
 
 '''
-RNA-Seq Alignment Workflow SLURM Script Generator
-Generates and submits a SLURM script that takes a BAM file, converts it to FASTQ, uses STAR two-pass method via ICGC code, and produces an aligned BAM file
+RNA-Seq Alignment Workflow Slurm Script Generator
+Generates and submits a Slurm script that takes a BAM file, converts it to FASTQ, uses STAR two-pass method via ICGC code, and produces an aligned BAM file
 David Cohen, February 2019
 https://docs.gdc.cancer.gov/Data/Bioinformatics_Pipelines/Expression_mRNA_Pipeline/
 '''
@@ -38,7 +38,7 @@ if workDir.endswith("/"):
 
 job_file = workDir + "/Slurm/" + outName + "_align.sh"
 
-# Write SLURM script
+# Write Slurm script
 
 with open(job_file,"w") as fh:
 
@@ -118,7 +118,7 @@ with open(job_file,"w") as fh:
 
 fh.close()
 
-# Submit SLURM script
+# Submit Slurm script
 
 os.system("sbatch " + job_file)
 

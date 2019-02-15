@@ -1,8 +1,8 @@
-## RNA-Seq Alignment Workflow SLURM Script Generator
+## RNA-Seq Alignment Workflow Slurm Script Generator and Submitter
 
 #### David Cohen - February 2019
 
-Generates and submits a SLURM script that takes a BAM file, converts it to FASTQ, uses STAR two-pass method via ICGC code, and produces an aligned BAM file
+Generates and submits a Slurm script that takes a BAM file, converts it to FASTQ, uses STAR two-pass method via ICGC code, and produces an aligned BAM file
 
 ##### Usage:
 
@@ -21,7 +21,7 @@ optional input parameters:
 
 ##### Requirements:
 
-Attached python environment RNA-Seq_Alignment:
+Included conda environment RNA-Seq_Alignment:
 
 ```
 conda env create -f Resources/environment.yml
@@ -29,7 +29,7 @@ conda env create -f Resources/environment.yml
 
 File structure in working directory:
 
-* Resources/icgc_rnaseq_align/star_align.py from <https://github.com/akahles/icgc_rnaseq_align>
+* Resources/icgc_rnaseq_align/star_align.py which is modified from <https://github.com/akahles/icgc_rnaseq_align> and already included in this repository
 
 * Resources/Genome/GRCh38.d1.vd1.fa from <https://gdc.cancer.gov/about-data/data-harmonization-and-generation/gdc-reference-files> (GRCh38.d1.vd1 Reference Sequence)
 
