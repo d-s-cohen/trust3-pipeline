@@ -224,6 +224,7 @@ if __name__ == "__main__":
     required = parser.add_argument_group("Required input parameters")
     required.add_argument("--genomeDir", default=None, help="Directory containing the reference genome index", required=True)
     required.add_argument("--tarFileIn", default=None, help="Input file containing the sequence information", required=True)
+    required.add_argument("--annotation", default=None, help="Annotation GTF file", required=True)
     optional = parser.add_argument_group("optional input parameters")
     optional.add_argument("--out", default="out.bam", help="Name of the output BAM file")
     optional.add_argument("--workDir", default="./", help="Work directory")
@@ -433,7 +434,8 @@ if __name__ == "__main__":
 --outSAMattributes ${outSAMattributes} \
 --outSAMunmapped ${outSAMunmapped} \
 --outSAMtype ${outSAMtype} \
---outSAMheaderHD ${outSAMheaderHD}""" % read_str
+--outSAMheaderHD ${outSAMheaderHD} \
+--sjdbGTFfile ${annotation}""" % read_str
 
 #--twopass1readsN ${twopass1readsN} \
 
@@ -458,7 +460,8 @@ if __name__ == "__main__":
         'outSAMattributes' : " ".join(args.outSAMattributes),
         'outSAMunmapped' : args.outSAMunmapped, 
         'outSAMtype' : " ".join(args.outSAMtype),
-        'outSAMheaderHD' : " ".join(args.outSAMheaderHD)
+        'outSAMheaderHD' : " ".join(args.outSAMheaderHD),
+	'annotation' : args.annotation
     })
 #        'twopass1readsN' : args.twopass1readsN,
     if align_sets[2] == 'PE':
@@ -510,6 +513,8 @@ if __name__ == "__main__":
     ### move output file
     shutil.move(os.path.join(align_dir, 'Log.final.out'), os.path.join(args.workDir, 'Log.final.out'))
     shutil.move(os.path.join(align_dir_1st, 'Log.final.out'), os.path.join(args.workDir, 'Log_1st_pass.final.out'))
+    #shutil.move(os.path.join(align_dir, 'Aligned.toTranscriptome.out.bam'), os.path.join(args.workDir, 'Aligned.toTranscriptome.out.bam'))
+    #shutil.move(os.path.join(align_dir, 'ReadsPerGene.out.tab'), os.path.join(args.workDir, 'ReadsPerGene.out.tab'))
     if 'BAM' in args.outSAMtype and 'SortedByCoordinate' in args.outSAMtype:
         shutil.move(os.path.join(align_dir, 'Aligned.sortedByCoord.out.bam'), args.out)
     elif 'BAM' in args.outSAMtype and 'Unsorted' in args.outSAMtype:

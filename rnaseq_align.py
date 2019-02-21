@@ -35,7 +35,7 @@ workDir = args.workDir
 if workDir.endswith("/"):
         workDir = workDir[:-1]
 
-job_file = workDir + "/Slurm/" + outName + "_align.sh"
+job_file = workDir + "/slurm/" + outName + "_align.sh"
 
 # Write SLURM script
 
@@ -47,8 +47,8 @@ with open(job_file,"w") as fh:
         fh.writelines("#SBATCH --time=06:00:00\n")
         fh.writelines("#SBATCH --mem=40G\n")
         fh.writelines("#SBATCH --cpus-per-task=11\n")
-        fh.writelines("#SBATCH --error=" + workDir + "/Slurm/" + outName + "_error.err\n")
-        fh.writelines("#SBATCH --output=" + workDir + "/Slurm/" + outName + "_outfile.out\n")
+        fh.writelines("#SBATCH --error=" + workDir + "/slurm/" + outName + "_error.err\n")
+        fh.writelines("#SBATCH --output=" + workDir + "/slurm/" + outName + "_outfile.out\n")
         fh.writelines("\n")
         fh.writelines("###############################################################\n")
         fh.writelines("# RNA-Seq Alignment Workflow \n")
@@ -80,7 +80,7 @@ with open(job_file,"w") as fh:
         fh.writelines("\n")
         fh.writelines("# Prepare FASTQ for star_align.py\n")
         fh.writelines("\n")
-        fh.writelines("tar cvf " + workDir + "/" + outName + "/" + outName + "_fastq.tar \\\n")
+        fh.writelines("tar cvf " + workDir + "/" + outName + "/" + outName + "_TEMP_fastq.tar \\\n")
         fh.writelines("-C " + workDir + "/" + outName + " \\\n")
         fh.writelines(outName + "_1.fastq.gz \\\n")
         fh.writelines(outName + "_2.fastq.gz \n")
@@ -89,9 +89,10 @@ with open(job_file,"w") as fh:
         fh.writelines("\n")
         fh.writelines("python " + workDir + "/Resources/icgc_rnaseq_align/star_align.py \\\n")
         fh.writelines("--genomeDir " + workDir + "/Resources/Index/star_genome_d1_vd1_gtfv22 \\\n")
-        fh.writelines("--tarFileIn " + workDir + "/" + outName + "/" + outName + "_fastq.tar \\\n")
+        fh.writelines("--tarFileIn " + workDir + "/" + outName + "/" + outName + "_TEMP_fastq.tar \\\n")
         fh.writelines("--workDir " + workDir + "/" + outName + " \\\n")
         fh.writelines("--genomeFastaFiles " + workDir + "/Resources/Genome/GRCh38.d1.vd1.fa \\\n")
+        fh.writelines("--annotation " + workDir + "/Resources/Annotation/gencode.v22.annotation.gtf \\\n")
         fh.writelines("--out " + workDir + "/" + outName + "/" + outName + ".bam \\\n")
         fh.writelines("--runThreadN 8 \\\n")
         fh.writelines("--outFilterMultimapScoreRange 1 \\\n")
@@ -112,15 +113,22 @@ with open(job_file,"w") as fh:
         fh.writelines("\n")
         fh.writelines("source deactivate\n")
         fh.writelines("\n")
-	fh.writelines("rm " + workDir + "/" + outName + "/" + outName + "_fastq.tar \n")
+	fh.writelines("rm " + workDir + "/" + outName + "/" + outName + "_TEMP_fastq.tar \n")
         fh.writelines("\n")
-        fh.writelines("samtools index " +  workDir + "/" + outName + "/" + outName + ".bam " +  workDir + "/" + outName + "/" + outName + ".bai")
+        fh.writelines("samtools index " +  workDir + "/" + outName + "/" + outName + ".bam " +  workDir + "/" + outName + "/" + outName + ".bam.bai \n")
         fh.writelines("\n")
+        fh.writelines("# Sort everything \n")
+        fh.writelines("\n")
+        fh.writelines("mv  -t " + workDir + "/bam_aligned/ " + workDir + "/" + outName + "/" + outName + ".bam " +  workDir + "/" + outName + "/" + outName + ".bam.bai \n" )
+        fh.writelines("mv  -t " + workDir + "/fastq/ " + workDir + "/" + outName + "/" + outName + "_1.fastq.gz " + workDir + "/" + outName + "/" + outName + "_2.fastq.gz \n")
+        fh.writelines("mv " + workDir + "/" + outName + "/Log.final.out " + workDir + "/log/" + outName + ".out \n")
+        fh.writelines("mv " + workDir + "/" + outName + "/Log_1st_pass.final.out " + workDir + "/log/" + outName + "_1st_pass.out \n")
+        fh.writelines("rm -r " + workDir + "/" + outName + "\n")
+        fh.writelines("\n") 
 
 fh.close()
 
 # Submit SLURM script
 
 os.system("sbatch " + job_file)
-
 
