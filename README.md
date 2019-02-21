@@ -4,6 +4,8 @@
 
 Generates and submits a SLURM script that takes a BAM file, converts it to FASTQ, uses STAR two-pass method via ICGC code, and produces an aligned BAM file
 
+Conducts work in individual generated temporary directory for each job and then distributes output BAM, FASTQ, and other files to appropriate directories  
+
 ##### Usage:
 
 rnaseq_align.py [options]
@@ -24,18 +26,18 @@ optional input parameters:
 Attached python environment RNA-Seq_Alignment:
 
 ```
-conda env create -f Resources/environment.yml
+conda env create -f resources/environment.yml
 ```
 
 File structure in working directory:
 
-* Resources/icgc_rnaseq_align/star_align.py from <https://github.com/akahles/icgc_rnaseq_align>
+* resources/icgc_rnaseq_align/star_align.py modified from <https://github.com/akahles/icgc_rnaseq_align>
 
-* Resources/Genome/GRCh38.d1.vd1.fa from <https://gdc.cancer.gov/about-data/data-harmonization-and-generation/gdc-reference-files> (GRCh38.d1.vd1 Reference Sequence)
+* resources/genome/GRCh38.d1.vd1.fa from <https://gdc.cancer.gov/about-data/data-harmonization-and-generation/gdc-reference-files> (GRCh38.d1.vd1 Reference Sequence)
 
-* Resources/Index/star_genome_d1_vd1_gtfv22/ directory and contents from <https://gdc.cancer.gov/about-data/data-harmonization-and-generation/gdc-reference-files> (GDC.h38.d1.vd1 STAR2 Index Files)
+* resources/index/star_genome_d1_vd1_gtfv22/ directory and contents from <https://gdc.cancer.gov/about-data/data-harmonization-and-generation/gdc-reference-files> (GDC.h38.d1.vd1 STAR2 Index Files)
 
-* Resources/Annotation/gencode.v22.annotation.gtf from <https://gdc.cancer.gov/about-data/data-harmonization-and-generation/gdc-reference-files>
+* resources/annotation/gencode.v22.annotation.gtf from <https://gdc.cancer.gov/about-data/data-harmonization-and-generation/gdc-reference-files>
 
 ##### Reference: 
 
