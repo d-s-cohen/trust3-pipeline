@@ -39,6 +39,8 @@ File structure in working directory:
 
 * resources/annotation/gencode.v22.annotation.gtf from <https://gdc.cancer.gov/about-data/data-harmonization-and-generation/gdc-reference-files> (GDC.h38 GENCODE v22 GTF)
 
+SAMtools
+
 ##### Reference: 
 
 <https://docs.gdc.cancer.gov/Data/Bioinformatics_Pipelines/Expression_mRNA_Pipeline/>
