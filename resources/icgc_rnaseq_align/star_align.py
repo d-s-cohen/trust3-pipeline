@@ -512,7 +512,7 @@ if __name__ == "__main__":
         shutil.move(os.path.join(align_dir, 'SJ.out.tab'), args.out + '.junctions')
 
     ### clean up working directory
-    shutil.rmtree(workdir)
+    #shutil.rmtree(workdir)
     shutil.rmtree(align_dir)
     if args.twopass1readsN != 0:
         shutil.rmtree(align_dir_1st)
