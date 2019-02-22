@@ -4,7 +4,7 @@
 
 Generates and submits a SLURM script that takes a BAM file, converts it to FASTQ, uses STAR two-pass method via ICGC code, and produces an aligned BAM file
 
-Conducts work in individual generated temporary directory for each job and then distributes output BAM, FASTQ, and other files to appropriate directories  
+Conducts work in an individual generated temporary directory for each job and then distributes output BAM, FASTQ, and other files to appropriate directories  
 
 ##### Usage:
 
@@ -15,7 +15,7 @@ required input parameters:
   --bamIn BAMIN      Input unaligned BAM file (default: None)
 
 optional input parameters:
-  --out OUT          String which output directory and file names are based
+  --out OUT          String which temporary directory and output file names are based
                      upon. Default string is based on input file name
                      (default: None)
   --workDir WORKDIR  Work directory (default: ./)

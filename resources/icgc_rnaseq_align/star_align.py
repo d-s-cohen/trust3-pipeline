@@ -223,7 +223,7 @@ if __name__ == "__main__":
     parser = argparse.ArgumentParser(description="ICGC RNA-Seq alignment wrapper for STAR alignments.", formatter_class=argparse.ArgumentDefaultsHelpFormatter, usage='%(prog)s [options]', add_help=False)
     required = parser.add_argument_group("Required input parameters")
     required.add_argument("--genomeDir", default=None, help="Directory containing the reference genome index", required=True)
-    required.add_argument("--tarFileIn", default=None, help="Input file containing the sequence information", required=True)
+    required.add_argument("--fastqDir", default=None, help="Directory containing the sequence information", required=True)
     required.add_argument("--annotation", default=None, help="Annotation GTF file", required=True)
     optional = parser.add_argument_group("optional input parameters")
     optional.add_argument("--out", default="out.bam", help="Name of the output BAM file")
@@ -276,25 +276,10 @@ if __name__ == "__main__":
     if args.outSAMattrRGfile is not None and not os.path.exists(args.outSAMattrRGfile):
         raise Exception("File provided via --outSAMattrRGfile does not exist\nFile: %s" % args.outSAMattrRGfile)
 
-    ### handling of input file (unpacking, etc. )
-    if args.useTMP is not None:
-        workdir = tempfile.mkdtemp(dir=os.environ[args.useTMP], prefix="star_inputdir_")
-    else:
-        workdir = tempfile.mkdtemp(dir=args.workDir, prefix="star_inputdir_")
-    if args.tarFileIn.endswith(".gz"):
-        tarcmd = "tar xvzf %s -C %s" % (args.tarFileIn, workdir)
-    elif args.tarFileIn.endswith(".bz"):
-        tarcmd = "tar xvjf %s -C %s" % (args.tarFileIn, workdir)
-    elif args.tarFileIn.endswith(".tar"):
-        tarcmd = "tar xvf %s -C %s" % (args.tarFileIn, workdir)
-    elif args.tarFileIn.endswith(".sra"):
-        tarcmd = "fastq-dump --gzip --split-3 --outdir %s %s" % (workdir, args.tarFileIn)
-    else:
-        raise Exception("Unknown input file extension for file %s" % (args.tarFileIn))
-    subprocess.check_call(tarcmd, shell=True)
-    
-    ### collect fastq information from extraction dir
-    align_sets = scan_workdir(os.path.abspath(workdir))
+    ### collect fastq information from dir
+
+    workdir = os.path.abspath(args.fastqDir)
+    align_sets = scan_workdir(workdir)
     
     ### process read group information
     files = []
