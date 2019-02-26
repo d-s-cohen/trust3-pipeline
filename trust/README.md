@@ -1,1 +1,1 @@
-TRUST output files go here.
+Output TRUST files go here.

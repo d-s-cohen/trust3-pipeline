@@ -105,6 +105,8 @@ with open(job_file,"w") as fh:
         fh.writelines("--outSAMstrandField intronMotif \\\n")
         fh.writelines("--outSAMunmapped Within\n")
         fh.writelines("\n")
+        fh.writelines("Generate BAM index file\n")
+        fh.writelines("\n")
         fh.writelines("samtools index " +  workDir + "/" + outName + "/" + outName + ".bam " +  workDir + "/" + outName + "/" + outName + ".bam.bai \n")
         fh.writelines("\n")
         fh.writelines("# Sort everything \n")
