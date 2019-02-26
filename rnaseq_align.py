@@ -13,10 +13,10 @@ import sys
 
 parser = argparse.ArgumentParser(description="RNA-Seq Alignment Workflow SLURM Submission File Generator", formatter_class=argparse.ArgumentDefaultsHelpFormatter, usage='%(prog)s [options]', add_help=True)
 required = parser.add_argument_group("required input parameters")
-required.add_argument("--bamIn", default=None, help="Input unaligned BAM file", required=True)
+required.add_argument("-i", "--bamIn", default=None, help="Input unaligned BAM file", required=True)
 optional = parser.add_argument_group("optional input parameters")
-optional.add_argument("--out", help="String which temporary directory and output file names are based upon. Default string is based on input file name.", required=False)
-optional.add_argument("--workDir", default=os.path.abspath('.'), help="Work directory")
+optional.add_argument("-o", "--out", help="String which temporary directory and output file names are based upon. Default string is based on input file name.", required=False)
+optional.add_argument("-w", "--workDir", default=os.path.abspath('.'), help="Work directory")
 
 args = parser.parse_args()
 
@@ -35,7 +35,7 @@ workDir = args.workDir
 if workDir.endswith("/"):
         workDir = workDir[:-1]
 
-job_file = workDir + "/slurm/" + outName + "_align.sh"
+job_file = workDir + "/slurm/" + outName + ".sh"
 
 # Write SLURM script
 
@@ -47,8 +47,8 @@ with open(job_file,"w") as fh:
         fh.writelines("#SBATCH --time=06:00:00\n")
         fh.writelines("#SBATCH --mem=40G\n")
         fh.writelines("#SBATCH --cpus-per-task=11\n")
-        fh.writelines("#SBATCH --error=" + workDir + "/slurm/" + outName + "_error.err\n")
-        fh.writelines("#SBATCH --output=" + workDir + "/slurm/" + outName + "_outfile.out\n")
+        fh.writelines("#SBATCH --error=" + workDir + "/slurm/" + outName + ".err\n")
+        fh.writelines("#SBATCH --output=" + workDir + "/slurm/" + outName + ".out\n")
         fh.writelines("\n")
         fh.writelines("###############################################################\n")
         fh.writelines("# RNA-Seq Alignment Workflow \n")
@@ -105,8 +105,6 @@ with open(job_file,"w") as fh:
         fh.writelines("--outSAMstrandField intronMotif \\\n")
         fh.writelines("--outSAMunmapped Within\n")
         fh.writelines("\n")
-        fh.writelines("source deactivate\n")
-        fh.writelines("\n")
         fh.writelines("samtools index " +  workDir + "/" + outName + "/" + outName + ".bam " +  workDir + "/" + outName + "/" + outName + ".bam.bai \n")
         fh.writelines("\n")
         fh.writelines("# Sort everything \n")
@@ -116,6 +114,12 @@ with open(job_file,"w") as fh:
         fh.writelines("mv " + workDir + "/" + outName + "/Log.final.out " + workDir + "/log/" + outName + ".out \n")
         fh.writelines("mv " + workDir + "/" + outName + "/Log_1st_pass.final.out " + workDir + "/log/" + outName + "_1st_pass.out \n")
         fh.writelines("rm -r " + workDir + "/" + outName + "\n")
+        fh.writelines("\n")
+        fh.writelines("# Run TRUST \n")
+        fh.writelines("\n")
+        fh.writelines("trust -f " + workDir + "/bam_aligned/" + outName + ".bam -g hg38 -o " + workDir + "/trust/ \n")
+        fh.writelines("\n")
+        fh.writelines("source deactivate\n")
         fh.writelines("\n") 
 
 fh.close()

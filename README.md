@@ -2,7 +2,7 @@
 
 #### David Cohen - February 2019
 
-Generates and submits a SLURM script that takes a BAM file, converts it to FASTQ, uses STAR two-pass method via ICGC code, and produces an aligned BAM file
+Generates and submits a SLURM script that takes a BAM file, converts it to FASTQ, uses STAR two-pass method via ICGC code, produces an aligned BAM file, then runs TRUST.
 
 Conducts work in an individual generated temporary directory for each job and then distributes output BAM, FASTQ, and other files to appropriate directories  
 
@@ -12,13 +12,15 @@ rnaseq_align.py [options]
 
 ```
 required input parameters:
-  --bamIn BAMIN      Input unaligned BAM file (default: None)
+  -i BAMIN, --bamIn BAMIN
+                        Input unaligned BAM file (default: None)
 
 optional input parameters:
-  --out OUT          String which temporary directory and output file names are based
-                     upon. Default string is based on input file name
-                     (default: None)
-  --workDir WORKDIR  Work directory (default: ./)
+  -o OUT, --out OUT     String which temporary directory and output file names
+                        are based upon. Default string is based on input file
+                        name. (default: None)
+  -w WORKDIR, --workDir WORKDIR
+                        Work directory (default: ./)
 ```
 
 ##### Requirements:
@@ -27,6 +29,18 @@ Attached python environment RNA-Seq_Alignment:
 
 ```
 conda env create -f resources/environment.yml
+```
+
+Then install TRUST:
+
+Download the latest version of TRUST from <https://bitbucket.org/liulab/trust>
+
+```
+tar xvzf trust-*.tar.gz
+cd trust
+source activate RNA-Seq_Alignment
+python setup.py install
+source deactivate
 ```
 
 File structure in working directory:
@@ -45,3 +59,4 @@ SAMtools
 
 <https://docs.gdc.cancer.gov/Data/Bioinformatics_Pipelines/Expression_mRNA_Pipeline/>
 
+<https://bitbucket.org/liulab/trust>
