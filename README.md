@@ -25,13 +25,13 @@ optional input parameters:
 
 ##### Requirements:
 
-Attached python environment RNA-Seq_Alignment:
+Create python environment RNA-Seq_Alignment from attached environment file:
 
 ```
 conda env create -f resources/environment.yml
 ```
 
-Then install TRUST:
+Then install TRUST in environment:
 
 Download the latest version of TRUST from <https://bitbucket.org/liulab/trust>
 
@@ -53,10 +53,10 @@ File structure in working directory:
 
 * resources/annotation/gencode.v22.annotation.gtf from <https://gdc.cancer.gov/about-data/data-harmonization-and-generation/gdc-reference-files> (GDC.h38 GENCODE v22 GTF)
 
-SAMtools
+SAMtools - <http://www.htslib.org/download/>
 
 ##### Reference: 
 
 <https://docs.gdc.cancer.gov/Data/Bioinformatics_Pipelines/Expression_mRNA_Pipeline/>
 
-<https://bitbucket.org/liulab/trust>
+<https://www.nature.com/articles/ng.3820>
