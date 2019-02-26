@@ -1,8 +1,8 @@
-## RNA-Seq Alignment Workflow SLURM Script Generator
+## RNA-Seq Alignment and TRUST Analysis Workflow
 
 #### David Cohen - February 2019
 
-Generates and submits a SLURM script that takes a BAM file, converts it to FASTQ, uses STAR two-pass method via ICGC code, produces an aligned BAM file, then runs TRUST.
+Generates and submits a SLURM script that takes an unaligned BAM file, converts it to FASTQ, uses STAR two-pass method via ICGC code, produces an aligned BAM file, then runs TRUST for analysis.
 
 Conducts work in an individual generated temporary directory for each job and then distributes output BAM, FASTQ, and other files to appropriate directories  
 
