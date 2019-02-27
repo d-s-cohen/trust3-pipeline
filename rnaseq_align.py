@@ -2,7 +2,7 @@
 
 '''
 RNA-Seq Alignment Workflow SLURM Script Generator
-Generates and submits a SLURM script that takes a BAM file, converts it to FASTQ, uses STAR two-pass method via ICGC code, and produces an aligned BAM file
+Generates and submits a SLURM script that takes a BAM file, converts it to FASTQ, uses STAR two-pass method via ICGC code, produces an aligned BAM and BAM index file, and runs analysis with TRUST
 David Cohen, February 2019
 https://docs.gdc.cancer.gov/Data/Bioinformatics_Pipelines/Expression_mRNA_Pipeline/
 '''
@@ -52,7 +52,7 @@ with open(job_file,"w") as fh:
         fh.writelines("\n")
         fh.writelines("###############################################################\n")
         fh.writelines("# RNA-Seq Alignment Workflow \n")
-        fh.writelines("# - Takes BAM file, converts to FASTQ, uses STAR two-pass method via ICGC code, produces an aligned BAM\n")
+        fh.writelines("# - Takes BAM file, converts to FASTQ, uses STAR two-pass method via ICGC code, produces an aligned BAM and BAM index file, and runs analysis with TRUST\n")
         fh.writelines("# - David Cohen, February 2019\n")
         fh.writelines("# https://docs.gdc.cancer.gov/Data/Bioinformatics_Pipelines/Expression_mRNA_Pipeline/\n")
         fh.writelines("###############################################################\n")
