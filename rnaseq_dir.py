@@ -16,7 +16,7 @@ parser = argparse.ArgumentParser(description="RNA-Seq Alignment and TRUST Analys
 required = parser.add_argument_group("required input parameters")
 required.add_argument("-i", "--bamIn", default=None, help="Input directory containing unaligned BAM files", required=True)
 optional = parser.add_argument_group("optional input parameters")
-optional.add_argument("-o", "--out", help="String which SLURM file names are based upon.. Default string is based on input directory name.", required=False)
+optional.add_argument("-o", "--out", help="String which SLURM file names are based upon. Default string is based on input directory name.", required=False)
 optional.add_argument("-w", "--workDir", default=os.path.abspath('.'), help="Work directory")
 
 args = parser.parse_args()

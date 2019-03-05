@@ -34,7 +34,7 @@ required input parameters:
                         (default: None)
 
 optional input parameters:
-  -o OUT, --out OUT     String which SLURM file names are based upon.. Default
+  -o OUT, --out OUT     String which SLURM file names are based upon. Default
                         string is based on input directory name. (default:
                         None)
   -w WORKDIR, --workDir WORKDIR
