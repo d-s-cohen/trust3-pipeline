@@ -1,4 +1,4 @@
-## RNA-Seq Alignment and TRUST Analysis Workflow
+## RNA-Seq Alignment and TRUST Analysis Pipeline
 
 #### David Cohen - February 2019
 
