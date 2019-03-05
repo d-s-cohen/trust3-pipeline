@@ -1,7 +1,7 @@
 #!/usr/bin/env python
 
 '''
-RNA-Seq Alignment and Analysis Workflow SLURM Script Generator
+RNA-Seq Alignment and TRUST Analysis SLURM Script Generator
 Takes a directory of BAM files and performs the following process on each BAM using a SLURM array:
 Generates and submits a SLURM script that takes a BAM file, converts it to FASTQ, uses STAR two-pass method via ICGC code, produces an aligned BAM and BAM index file, and runs analysis with TRUST
 David Cohen, February 2019
@@ -12,7 +12,7 @@ import argparse
 import os
 import sys
 
-parser = argparse.ArgumentParser(description="RNA-Seq Alignment Workflow SLURM Submission File Generator", formatter_class=argparse.ArgumentDefaultsHelpFormatter, usage='%(prog)s [options]', add_help=True)
+parser = argparse.ArgumentParser(description="RNA-Seq Alignment and TRUST Analysis SLURM Script Generator", formatter_class=argparse.ArgumentDefaultsHelpFormatter, usage='%(prog)s [options]', add_help=True)
 required = parser.add_argument_group("required input parameters")
 required.add_argument("-i", "--bamIn", default=None, help="Input directory containing unaligned BAM files", required=True)
 optional = parser.add_argument_group("optional input parameters")
@@ -58,7 +58,7 @@ with open(job_file,"w") as fh:
 
         fh.writelines("#!/bin/bash\n")
         fh.writelines("\n")
-        fh.writelines("#SBATCH --job-name=rnaseq_align\n")
+        fh.writelines("#SBATCH --job-name=rnaseq\n")
         fh.writelines("#SBATCH --time=06:00:00\n")
         fh.writelines("#SBATCH --mem=40G\n")
         fh.writelines("#SBATCH --cpus-per-task=11\n")
@@ -66,7 +66,7 @@ with open(job_file,"w") as fh:
         fh.writelines("#SBATCH --output=" + workDir + "/slurm/" + outName + "_%A_%a.out\n")
         fh.writelines("\n")
         fh.writelines("###############################################################\n")
-        fh.writelines("# RNA-Seq Alignment and Analysis Workflow \n")
+        fh.writelines("# RNA-Seq Alignment and TRUST Analysis \n")
         fh.writelines("# Takes a directory of BAM files and performs the following process on each BAM using a SLURM array: \n")
         fh.writelines("# - Takes BAM file, converts to FASTQ, uses STAR two-pass method via ICGC code, produces an aligned BAM and BAM index file, and runs analysis with TRUST\n")
         fh.writelines("# - David Cohen, February 2019\n")
