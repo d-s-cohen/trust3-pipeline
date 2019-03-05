@@ -4,11 +4,13 @@
 
 Generates and submits a SLURM script that takes an unaligned BAM file, converts it to FASTQ, uses STAR two-pass method via ICGC code, produces an aligned BAM file, then runs TRUST for analysis.
 
-Conducts work in an individual generated temporary directory for each job and then distributes output BAM, FASTQ, and other files to appropriate directories  
+Conducts conversion and alignment in an individual generated temporary directory for each job and then distributes output BAM, FASTQ, and other files to appropriate directories. Then runs TRUST.
+
+Two script options are available. One of which takes individual BAM files as input. The other takes directories of BAMs.  
 
 ##### Usage:
 
-rnaseq_align.py [options]
+rnaseq_file.py [options]
 
 ```
 required input parameters:
@@ -19,6 +21,22 @@ optional input parameters:
   -o OUT, --out OUT     String which temporary directory and output file names
                         are based upon. Default string is based on input file
                         name. (default: None)
+  -w WORKDIR, --workDir WORKDIR
+                        Work directory (default: ./)
+```
+
+rnaseq_dir.py [options]
+
+```
+required input parameters:
+  -i BAMIN, --bamIn BAMIN
+                        Input directory containing unaligned BAM files
+                        (default: None)
+
+optional input parameters:
+  -o OUT, --out OUT     String which SLURM file names are based upon.. Default
+                        string is based on input directory name. (default:
+                        None)
   -w WORKDIR, --workDir WORKDIR
                         Work directory (default: ./)
 ```
