@@ -1,42 +1,29 @@
 ## RNA-Seq Alignment and TRUST Analysis Pipeline
 
-#### David Cohen - February 2019
+#### David Cohen | February - March 2019
 
 Generates and submits a SLURM script that takes an unaligned BAM file, converts it to FASTQ, uses STAR two-pass method via ICGC code, produces an aligned BAM file, then runs TRUST for analysis.
 
 Conducts conversion and alignment in an individual generated temporary directory for each job and then distributes output BAM, FASTQ, and other files to appropriate directories. Then runs TRUST.
 
-Two script options are available. One of which takes individual BAM files as input. The other takes directories of BAMs.  
+Capable of processing individual BAM files as input or directories of BAMs.  
 
 ##### Usage:
 
-rnaseq_file.py [options]
+rnaseq.py [options]
 
 ```
 required input parameters:
   -i BAMIN, --bamIn BAMIN
-                        Input unaligned BAM file (default: None)
+                        Either a directory containing unaligned BAM files or a
+                        single BAM file (default: None)
 
 optional input parameters:
-  -o OUT, --out OUT     String which temporary directory and output file names
-                        are based upon. Default string is based on input file
+  -o OUT, --out OUT     String which SLURM file names are based upon in case
+                        of input directory. String which temporary directory
+                        and all output file names are based upon in case of
+                        single input file. Default string is based on input
                         name. (default: None)
-  -w WORKDIR, --workDir WORKDIR
-                        Work directory (default: ./)
-```
-
-rnaseq_dir.py [options]
-
-```
-required input parameters:
-  -i BAMIN, --bamIn BAMIN
-                        Input directory containing unaligned BAM files
-                        (default: None)
-
-optional input parameters:
-  -o OUT, --out OUT     String which SLURM file names are based upon. Default
-                        string is based on input directory name. (default:
-                        None)
   -w WORKDIR, --workDir WORKDIR
                         Work directory (default: ./)
 ```
