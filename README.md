@@ -26,6 +26,15 @@ optional input parameters:
                         name. (default: None)
   -w WORKDIR, --workDir WORKDIR
                         Work directory (default: ./)
+  -e EXT, --ext EXT     For directory input, scan for files ending in this
+                        string (default: .bam)
+  -p EXTPRE, --extPre EXTPRE
+                        For directory input, this is an optional string to
+                        precede the extension, in order to specifiy a subset
+                        of those files. (default: )
+  -s                    If selected, script will be generated but not
+                        submitted to slurm. Useful for modifying the script
+                        before submission. (default: False)
 ```
 
 ##### Requirements:
@@ -36,7 +45,7 @@ Create python environment RNA-Seq_Alignment from attached environment file:
 conda env create -f resources/environment.yml
 ```
 
-Then install TRUST in environment:
+Then install TRUST and htseq in environment:
 
 Download the latest version of TRUST from <https://bitbucket.org/liulab/trust>
 
@@ -45,6 +54,7 @@ tar xvzf trust-*.tar.gz
 cd trust
 source activate RNA-Seq_Alignment
 python setup.py install
+conda install htseq
 source deactivate
 ```
 

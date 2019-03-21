@@ -20,8 +20,9 @@ required.add_argument("-i", "--bamIn", default=None, help="Either a directory co
 optional = parser.add_argument_group("optional input parameters")
 optional.add_argument("-o", "--out", help="String which SLURM file names are based upon in case of input directory. String which temporary directory and all output file names are based upon in case of single input file. Default string is based on input name.", required=False)
 optional.add_argument("-w", "--workDir", default=os.path.abspath('.'), help="Work directory")
-optional.add_argument("-e", "--endsWith", default="", help="For directory input, scan for files ending in .bam, preceded by this string, in order to specifiy a subset of .bam files.")
-optional.add_argument('-s', action='store_true', help="If selected, script will be generated but not submitted to slurm")
+optional.add_argument("-e", "--ext", default=".bam", help="For directory input, scan for files ending in this string" )
+optional.add_argument("-p", "--extPre", default="", help="For directory input, this is an optional string to precede the extension, in order to specifiy a subset of those files.")
+optional.add_argument('-s', action='store_true', help="If selected, script will be generated but not submitted to slurm. Useful for modifying the script before submission.")
 
 args = parser.parse_args()
 
@@ -51,7 +52,7 @@ if  os.path.isfile(args.bamIn):
 		fh.writelines("#!/bin/bash\n")
 		fh.writelines("\n")
 		fh.writelines("#SBATCH --job-name=rnaseq\n")
-		fh.writelines("#SBATCH --time=06:00:00\n")
+		fh.writelines("#SBATCH --time=15:00:00\n")
 		fh.writelines("#SBATCH --mem=45G\n")
 		fh.writelines("#SBATCH --cpus-per-task=11\n")
 		fh.writelines("#SBATCH --error=" + workDir + "/slurm/" + outName + ".err\n")
@@ -146,7 +147,7 @@ elif os.path.isdir(args.bamIn):
 	bamNameList = []
 
 	for file in os.listdir(args.bamIn):
-		if file.endswith(args.endsWith + ".bam"):
+		if file.endswith(args.extPre + args.ext):
 			bamNameList.append(file[:-4])
 
 	arrayLength = len(bamNameList) - 1
@@ -229,7 +230,7 @@ elif os.path.isdir(args.bamIn):
 		fh.writelines("#!/bin/bash\n")
 		fh.writelines("\n")
 		fh.writelines("#SBATCH --job-name=rnaseq\n")
-		fh.writelines("#SBATCH --time=10:00:00\n")
+		fh.writelines("#SBATCH --time=15:00:00\n")
 		fh.writelines("#SBATCH --mem=45G\n")
 		fh.writelines("#SBATCH --cpus-per-task=11\n")
 		fh.writelines("#SBATCH --error=" + workDir + "/" + outName + "/" + "slurm/%A_%a.err\n")
@@ -245,7 +246,7 @@ elif os.path.isdir(args.bamIn):
 		fh.writelines("###############################################################\n")
 		fh.writelines("\n")
 		fh.writelines('bamNameList=("' + '" "'.join(bamNameList) + '") \n')
-                fh.writelines("# bash array length is " + str(arrayLength) + " \n")
+		fh.writelines("# bash array length is " + str(arrayLength) + " \n")
 		fh.writelines("\n")
 		fh.writelines('[ -d "' + workDir + '/' + outName + '/TEMP/${bamNameList[$SLURM_ARRAY_TASK_ID]}" ] && (echo "Directory ${bamNameList[$SLURM_ARRAY_TASK_ID]} already exists. Choose a Different output name or remove current directory."; scancel $SLURM_JOB_ID)\n')
 		fh.writelines("\n")
@@ -257,8 +258,8 @@ elif os.path.isdir(args.bamIn):
 		fh.writelines("# BAM to FASTQ conversion via biobambam\n")
 		fh.writelines("\n")
 		fh.writelines("bamtofastq \\\n")
-                fh.writelines("F=" + workDir + "/" + outName + "/TEMP/${bamNameList[$SLURM_ARRAY_TASK_ID]}/fastq/${bamNameList[$SLURM_ARRAY_TASK_ID]}_1.fastq.gz \\\n")
-                fh.writelines("F2=" + workDir + "/" + outName + "/TEMP/${bamNameList[$SLURM_ARRAY_TASK_ID]}/fastq/${bamNameList[$SLURM_ARRAY_TASK_ID]}_2.fastq.gz \\\n")
+		fh.writelines("F=" + workDir + "/" + outName + "/TEMP/${bamNameList[$SLURM_ARRAY_TASK_ID]}/fastq/${bamNameList[$SLURM_ARRAY_TASK_ID]}_1.fastq.gz \\\n")
+		fh.writelines("F2=" + workDir + "/" + outName + "/TEMP/${bamNameList[$SLURM_ARRAY_TASK_ID]}/fastq/${bamNameList[$SLURM_ARRAY_TASK_ID]}_2.fastq.gz \\\n")
 		fh.writelines("collate=1 \\\n")
 		fh.writelines("exclude=QCFAIL,SECONDARY,SUPPLEMENTARY \\\n")
 		fh.writelines("filename=" + bamDir + "/${bamNameList[$SLURM_ARRAY_TASK_ID]}.bam \\\n")
@@ -322,7 +323,7 @@ elif os.path.isdir(args.bamIn):
 		fh.writelines("trust -f " + workDir + "/" + outName + "/bam/${bamNameList[$SLURM_ARRAY_TASK_ID]}.bam -g hg38 -B -o " + workDir + "/" + outName + "/trust/ \n")
 		fh.writelines("trust -f " + workDir + "/" + outName + "/bam/${bamNameList[$SLURM_ARRAY_TASK_ID]}.bam -g hg38 -B -L -o " + workDir + "/" + outName + "/trust/ \n")
 		fh.writelines("\n")
-#		fh.writelines("htseq-count -m intersection-nonempty -i gene_id -r pos -s no -f bam " + workDir + "/" + outName + "/bam/${bamNameList[$SLURM_ARRAY_TASK_ID]}.bam " + workDir + "/resources/annotation/gencode.v22.annotation.gtf > " + workDir + "/" + outName + "/htseq/${bamNameList[$SLURM_ARRAY_TASK_ID]}.txt \n")		
+		fh.writelines("htseq-count -m intersection-nonempty -i gene_id -r pos -s no -f bam " + workDir + "/" + outName + "/bam/${bamNameList[$SLURM_ARRAY_TASK_ID]}.bam " + workDir + "/resources/annotation/gencode.v22.annotation.gtf > " + workDir + "/" + outName + "/htseq/${bamNameList[$SLURM_ARRAY_TASK_ID]}.txt \n")		
 		fh.writelines("\n")
 		fh.writelines("source deactivate\n")
 		fh.writelines("\n")
